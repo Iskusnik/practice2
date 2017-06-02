@@ -62,27 +62,34 @@ namespace practice2
             Console.WriteLine(n);
             Console.WriteLine(avr);
             for (int i = 0; i < n; i++)
-            {
                 d[i] = new Worker(int.Parse(input.ReadLine()), i + 1);
-                Console.WriteLine(d[i].Pay + "  " + d[i].Num);
-            }
-
-            Console.WriteLine("");
-            Array.Sort(d, new Worker.PaySort());
-            for (int i = 0; i < n; i++)
-            {
-                Console.WriteLine(d[i].Pay + "  " + d[i].Num);
-            }
-            Console.WriteLine("");
-            Array.Sort(d, new Worker.NumSort());
-            for (int i = 0; i < n; i++)
-            {
-                Console.WriteLine(d[i].Pay + "  " + d[i].Num);
-            }
-            //2+1* создать класс рабочего от номера и зарплаты. Отсортировать по з/п, смотреть, сколько надо.
-
             
 
+            
+            //2+1* создать класс рабочего от номера и зарплаты. Отсортировать по з/п, смотреть, сколько надо.
+
+            Array.Sort(d, new Worker.PaySort());
+            for (Int64 i = 0; i < n; i++)
+            {
+                bool ok = false;
+
+                if (d[i].Pay > avr)
+                    for (Int64 j = n - 1; j > 0; j--)
+                        if (d[j].Pay < avr)
+                        {
+                            d[j].HelpInfo = j.ToString() + " " + (d[i].Pay - avr).ToString();
+                            d[j].Pay += d[i].Pay - avr;
+                            d[i].Pay = avr;
+                        }
+                        else;
+                else;
+                if (d[i].Pay == avr && d[i].HelpInfo == null)
+                    d[i].HelpInfo = "0 0";
+            }
+
+            Array.Sort(d, new Worker.NumSort());
+            for (int i = 0; i < n; i++)
+                Console.WriteLine(d[i].HelpInfo);
         }
     }
 }
