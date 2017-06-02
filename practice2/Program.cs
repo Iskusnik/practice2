@@ -8,10 +8,10 @@ namespace practice2
 {
     class Worker
     {
-        public Int64 Num; //номер рабочего
-        public Int64 Pay; //з/п
+        public int Num; //номер рабочего
+        public int Pay; //з/п
         public string HelpInfo;//Строка для ответа
-        public Worker (Int64 pay, Int64 num)
+        public Worker (int pay, int num)
         {
             Num = num;
             Pay = pay;
@@ -44,7 +44,7 @@ namespace practice2
     {
         static void Main(string[] args)
         {
-            Int64 n, avr;
+            int n, avr;
             Worker[] d;
             string temp;
 
@@ -67,12 +67,15 @@ namespace practice2
             //300      300     150
             //290??    200     350
             //O! Будем помогать следующему по величине зарплаты, приводя данную з.п к среднему
+            //time error
             Array.Sort(d, new Worker.PaySort());
-            for (Int64 i = 0; i < n; i++)
+            
+            for (int i = 0; i < n; i++)
             {
-                if (d[i].Pay > avr)
-                {
-                    for (Int64 j = i + 1; j < n; j++)
+                if (d[i].Pay == avr)
+                    break;
+                if (d[i].Pay > avr){
+                    for (int j = i + 1; j < n; j++)
                         if (d[j].Pay != avr)
                         {
                             d[j].HelpInfo = (d[i].Num).ToString() + " " + (d[i].Pay - avr).ToString();
@@ -81,17 +84,21 @@ namespace practice2
                             break;
                         }
                 }
-                if (d[i].HelpInfo == null)
-                    d[i].HelpInfo = "0 0";
             }
             Array.Sort(d, new Worker.NumSort());
 
-            for (int i = 0; i < n; i++)
+           /* for (int i = 0; i < n; i++)
+            {
+                if (d[i].HelpInfo == null)
+                    d[i].HelpInfo = "0 0";
                 Console.WriteLine(d[i].HelpInfo);
-
+            }*/
             for (int i = 0; i < n; i++)
+            {
+                if (d[i].HelpInfo == null)
+                    d[i].HelpInfo = "0 0";
                 output.WriteLine(d[i].HelpInfo);
-
+            }
             input.Close();
             output.Close();
         }
