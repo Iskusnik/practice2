@@ -2,10 +2,7 @@
 using System.Collections;
 using System.Linq;
 using System.Text;
-using System.IO;// 3 200
-                //100 150 350 ??? 
-                //1 идти по массиву и если малоимущий, то списать с ближайшего не малоимущего, вывести ~ n*n, если будет работать
-                //1*можно помогать только одному, соответсвенно, надо начинать с наиболее богатых и приравнивать их к среденему - поэтому 1 не будет работать
+using System.IO;
 
 namespace practice2
 {
@@ -67,29 +64,30 @@ namespace practice2
 
             
             //2+1* создать класс рабочего от номера и зарплаты. Отсортировать по з/п, смотреть, сколько надо.
-
+            //3 200
+            //10       100     100
+            //300      300     150
+            //290??    200     350
+            //O! Будем помогать следующему по величине зарплаты, приводя данную з.п к среднему
             Array.Sort(d, new Worker.PaySort());
             for (Int64 i = 0; i < n; i++)
             {
-                bool ok = false;
-
                 if (d[i].Pay > avr)
-                    for (Int64 j = n - 1; j > 0; j--)
-                        if (d[j].Pay < avr)
-                        {
-                            d[j].HelpInfo = j.ToString() + " " + (d[i].Pay - avr).ToString();
-                            d[j].Pay += d[i].Pay - avr;
-                            d[i].Pay = avr;
-                        }
-                        else;
-                else;
-                if (d[i].Pay == avr && d[i].HelpInfo == null)
+                {
+                    d[i + 1].HelpInfo = (d[i].Num).ToString() + " " + (d[i].Pay - avr).ToString();
+                    d[i + 1].Pay += d[i].Pay - avr;
+                    d[i].Pay = avr;
+                }
+                if (d[i].HelpInfo == null)
                     d[i].HelpInfo = "0 0";
             }
 
             Array.Sort(d, new Worker.NumSort());
             for (int i = 0; i < n; i++)
                 Console.WriteLine(d[i].HelpInfo);
+
+            for (int i = 0; i < n; i++)
+                output.WriteLine(d[i].HelpInfo);
         }
     }
 }
