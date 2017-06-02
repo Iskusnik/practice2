@@ -48,16 +48,14 @@ namespace practice2
             Worker[] d;
             string temp;
 
-            StreamReader input = new StreamReader("input.txt");
-            StreamWriter output = new StreamWriter("output.txt");
+            StreamReader input = new StreamReader("INPUT.TXT");
+            StreamWriter output = new StreamWriter("OUTPUT.TXT");
 
             temp = input.ReadLine();
             n = int.Parse(temp.Split()[0]);
             avr = int.Parse(temp.Split()[1]);
             d = new Worker[n];
-
-            Console.WriteLine(n);
-            Console.WriteLine(avr);
+            
             for (int i = 0; i < n; i++)
                 d[i] = new Worker(int.Parse(input.ReadLine()), i + 1);
             
@@ -74,20 +72,28 @@ namespace practice2
             {
                 if (d[i].Pay > avr)
                 {
-                    d[i + 1].HelpInfo = (d[i].Num).ToString() + " " + (d[i].Pay - avr).ToString();
-                    d[i + 1].Pay += d[i].Pay - avr;
-                    d[i].Pay = avr;
+                    for (Int64 j = i + 1; j < n; j++)
+                        if (d[j].Pay != avr)
+                        {
+                            d[j].HelpInfo = (d[i].Num).ToString() + " " + (d[i].Pay - avr).ToString();
+                            d[j].Pay += d[i].Pay - avr;
+                            d[i].Pay = avr;
+                            break;
+                        }
                 }
                 if (d[i].HelpInfo == null)
                     d[i].HelpInfo = "0 0";
             }
-
             Array.Sort(d, new Worker.NumSort());
+
             for (int i = 0; i < n; i++)
                 Console.WriteLine(d[i].HelpInfo);
 
             for (int i = 0; i < n; i++)
                 output.WriteLine(d[i].HelpInfo);
+
+            input.Close();
+            output.Close();
         }
     }
 }
