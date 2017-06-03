@@ -17,24 +17,16 @@ namespace practice2
             Pay = pay;
         }
         
-        public class NumSort : IComparer
-        {
-            public int Compare(object obj1, object obj2)
-            {
-                if (((Worker)obj1).Num >= ((Worker)obj2).Num)
-                    return 1;
-                else
-                    return -1;
-            }
-        }
         public class PaySort : IComparer
         {
             public int Compare(object obj1, object obj2)
             {
-                if (((Worker)obj1).Pay >= ((Worker)obj2).Pay)
+
+                if (((Worker)obj1).Pay > ((Worker)obj2).Pay)
                     return -1;
-                else
+                if (((Worker)obj1).Pay < ((Worker)obj2).Pay)
                     return 1;
+                return 0;
             }
         }
 
@@ -58,19 +50,22 @@ namespace practice2
             
             for (int i = 0; i < n; i++)
                 d[i] = new Worker(int.Parse(input.ReadLine()), i + 1);
-            
 
-            
+
+
             //2+1* создать класс рабочего от номера и зарплаты. Отсортировать по з/п, смотреть, сколько надо.
-            //3 200
-            //10       100     100
-            //300      300     150
-            //290??    200     350
-            //O! Будем помогать следующему по величине зарплаты, приводя данную з.п к среднему
-            //time error
+            //6 300
+            //200
+            //200
+            //400
+            //400
+            //300
+            //300
+
+
             Array.Sort(d, new Worker.PaySort());
-            
-            for (int i = 0; i < n; i++)
+            string[] helpInfo = new string[n];
+            for (int i = 0; i < n - 1; i++)
             {
                 if (d[i].Pay == avr)
                     break;
@@ -78,26 +73,25 @@ namespace practice2
                     for (int j = i + 1; j < n; j++)
                         if (d[j].Pay != avr)
                         {
-                            d[j].HelpInfo = (d[i].Num).ToString() + " " + (d[i].Pay - avr).ToString();
+                            helpInfo[d[j].Num - 1] = (d[i].Num).ToString() + " " + (d[i].Pay - avr).ToString();
                             d[j].Pay += d[i].Pay - avr;
                             d[i].Pay = avr;
                             break;
                         }
                 }
             }
-            Array.Sort(d, new Worker.NumSort());
 
-           /* for (int i = 0; i < n; i++)
-            {
-                if (d[i].HelpInfo == null)
-                    d[i].HelpInfo = "0 0";
-                Console.WriteLine(d[i].HelpInfo);
-            }*/
             for (int i = 0; i < n; i++)
             {
-                if (d[i].HelpInfo == null)
-                    d[i].HelpInfo = "0 0";
-                output.WriteLine(d[i].HelpInfo);
+                if (helpInfo[i] == null)
+                    helpInfo[i] = "0 0";
+                Console.WriteLine(helpInfo[i]);
+            }
+            for (int i = 0; i < n; i++)
+            {
+                if (helpInfo[i] == null)
+                    helpInfo[i] = "0 0";
+                output.WriteLine(helpInfo[i]);
             }
             input.Close();
             output.Close();
