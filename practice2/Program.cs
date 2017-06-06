@@ -49,7 +49,9 @@ namespace practice2
         static void Main(string[] args)
         {
             int n, avr;
-            Worker[] d;
+            Stack helpers = new Stack();
+            Stack need = new Stack();
+
             string temp;
 
             StreamReader input = new StreamReader("INPUT.TXT");
@@ -58,54 +60,40 @@ namespace practice2
             temp = input.ReadLine();
             n = int.Parse(temp.Split()[0]);
             avr = int.Parse(temp.Split()[1]);
-            d = new Worker[n];
-
-            for (int i = 0; i < n; i++)
-                d[i] = new Worker(avr - int.Parse(input.ReadLine()), i + 1);
-
-
-
-
+            Worker[] d = new Worker[n];
 
             for (int i = 0; i < n; i++)
             {
-
-                if (d[i].Pay > 0)
-                    for (int j = 0; j < n; j++)
-                        if (d[j].Pay < 0)
-                        {
-                            d[j].Pay += d[i].Pay;
-                            d[i].HelpPay = d[i].Pay;
-                            d[i].Pay = 0;
-                            d[i].HelpNum = d[j].Num;
-                            while (d[j].Pay > 0)
-                                for (int k = 0; k < n; k++)
-                                    if (d[k].Pay < 0)
-                                    {
-                                        d[k].Pay += d[j].Pay;
-                                        d[j].HelpPay = d[j].Pay;
-                                        d[j].Pay = 0;
-                                        d[j].HelpNum = d[k].Num;
-                                        j = k;
-                                    }
-                            break;
-                        }
-                /*  if (d[i].Pay < 0)
-                      for (int j = 0; j < n; j++)
-                          if (d[j].Pay > 0)
-                          {
-                              d[i].Pay += d[j].Pay;
-                              d[j].HelpPay = d[j].Pay;
-                              d[j].Pay = 0;
-                              d[j].HelpNum = d[i].Num;
-                              break;
-                          }*/
+                int a;
+                a = avr - int.Parse(input.ReadLine());
+                d[i] = new Worker(a, i + 1);
+                if (a > 0)
+                    helpers.Push(d[i]);
+                if (a < 0)
+                    need.Push(d[i]);
             }
 
-            Array.Sort(d, new Worker.PayNum());
+
+
+
+
+            while (helpers.Count > 0 && need.Count > 0)
+            { 
+                Worker helper = (Worker)helpers.Pop();
+                Worker needhlp = (Worker)need.Pop();
+                needhlp.Pay += helper.Pay;
+                helper.HelpPay = helper.Pay;
+                helper.Pay = 0;
+                helper.HelpNum = needhlp.Num;
+                if (needhlp.Pay > 0)
+                    helpers.Push(needhlp);
+                if (needhlp.Pay < 0)
+                    need.Push(needhlp);
+            }
+
             for (int i = 0; i < n; i++)
             {
-                output.WriteLine("{0} {1}", d[i].HelpNum, d[i].HelpPay);
+                Console.WriteLine("{0} {1}", d[i].HelpNum, d[i].HelpPay);
             }
 
             input.Close();
