@@ -18,32 +18,36 @@ namespace practice2
             Pay = pay;
         }
 
-        public class PaySort : IComparer
+        
+    }
+    class Stack
+    {
+        public int Count = 0;
+        Node top { get; set; }
+        public void Push(Worker temp)
         {
-            public int Compare(object obj1, object obj2)
-            {
-
-                if (((Worker)obj1).Pay > ((Worker)obj2).Pay)
-                    return -1;
-                if (((Worker)obj1).Pay < ((Worker)obj2).Pay)
-                    return 1;
-                return 0;
-            }
+            Node head = new Node(temp);
+            head.Next = top;
+            top = head;
+            Count++;
         }
-        public class PayNum : IComparer
+        public Worker Pop()
         {
-            public int Compare(object obj1, object obj2)
-            {
-
-                if (((Worker)obj1).Num < ((Worker)obj2).Num)
-                    return -1;
-                if (((Worker)obj1).Num > ((Worker)obj2).Num)
-                    return 1;
-                return 0;
-            }
+            Worker info = top.Info;
+            top = top.Next;
+            Count--;
+            return info;
         }
     }
-
+    class Node
+    {
+        public Worker Info { get; set; }
+        public Node Next { get; set; }
+        public Node (Worker temp)
+        {
+            Info = temp;
+        }
+    }
     class Program
     {
         static void Main(string[] args)
