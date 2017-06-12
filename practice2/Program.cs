@@ -20,7 +20,7 @@ namespace practice2
 
         
     }
-    class Stack
+    class MyStack
     {
         public int Count = 0;
         Node top { get; set; }
@@ -38,6 +38,8 @@ namespace practice2
             Count--;
             return info;
         }
+        public MyStack ()
+        { }
     }
     class Node
     {
@@ -53,8 +55,8 @@ namespace practice2
         static void Main(string[] args)
         {
             int n, avr;
-            Stack helpers = new Stack();
-            Stack need = new Stack();
+            MyStack helpers = new MyStack();
+            MyStack need = new MyStack();
 
             string temp;
 
